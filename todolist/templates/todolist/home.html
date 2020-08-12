@@ -1,0 +1,100 @@
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% load crispy_forms_tags %}
+{{ form.media }}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>To-Do</title>
+	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  	<style>
+  		html, body {
+		    max-width: 100%;
+		    overflow-x: hidden;
+		}
+  	</style>
+</head>
+<body class="bg-secondary">
+	<div>
+		<h4 class="text-light "><i><b><marquee>Welcome to To-Do</marquee></b></i></h4>
+	</div>
+	<nav class="navbar navbar-expand-md bg-danger navbar-danger justify-content-center sticky-top font-weight-bolder font-italic">
+	  <h1>To-Do Web App</h1>
+	</nav>
+	<br>
+	<br>
+	<div class="row">
+	 	<div class="col-md-8">    	
+			<legend class="border-bottom mb-4 font-weight-bolder font-italic">To Do Lists</legend>
+			{% if is_empty %}
+				<h1 class="article-content p-5 shadow-lg border border-danger rounded">You have no reminder as of now.</h1>
+			{% else %}
+			<legend class="border-bottom mb-4 mark text-danger font-weight-bolder font-italic text-center">Due Today</legend>
+				{% if today_is_empty %}
+					<h1 class="article-content p-5 shadow-lg border border-danger rounded">You have no reminder due today</h1>
+				{% else %}
+					{% for post in today_posts %}
+						<article class="p-5 shadow-lg media content-section border border-danger rounded">
+						  <div class="media-body">
+						    <div class="article-metadata">
+						      <a class="mr-2 text-light" href="#">{{ post.title }}</a>
+						      <small class="text-light">{{ post.date_created|date:"j F,  Y" }}</small>
+						      <a class="float-right" href="{% url 'remove' post.pk %}"><button class="btn btn-danger btn-outline-dark">Remove</button></a>
+						    </div>
+						    <br>
+						    <p class="article-content">{{ post.description }}</p>
+						    <a class="float-right" href="{% url 'update' post.pk %}"><button class="btn btn-primary btn-outline-dark">Update </button></a>
+						  	<p class="article-content text-danger"><kbd>Date-Due: {{ post.due_date|date:"j F, Y" }}</kbd></p>
+						  </div>
+						</article>
+						<br>
+					{% endfor %}
+				{% endif %}
+			<legend class="border-bottom mb-4 mark text-danger font-weight-bolder font-italic text-center">UpComing</legend>
+				{% if upcoming_is_empty %}
+					<h1 class="article-content p-5 shadow-lg border border-danger rounded">You have no reminder due today</h1>
+				{% else %}
+					{% for post in upcoming_posts %}
+						<article class="p-5 shadow-lg media content-section border border-danger rounded">
+						  <div class="media-body">
+						    <div class="article-metadata">
+						      <a class="mr-2 text-light" href="#">{{ post.title }}</a>
+						      <small class="text-light">{{ post.date_created|date:"j F,  Y" }}</small>
+						      <a class="float-right" href="{% url 'remove' post.pk %}"><button class="btn btn-danger btn-outline-dark">Remove</button></a>
+						    </div>
+						    <br>
+						    <p class="article-content">{{ post.description }}</p>
+						    <a class="float-right" href="{% url 'update' post.pk %}"><button class="btn btn-primary btn-outline-dark">Update </button></a>
+						  	<p class="article-content text-danger"><kbd>Date-Due: {{ post.due_date|date:"j F, Y" }}</kbd></p>
+						  </div>
+						</article>
+						<br>
+					{% endfor %}
+				{% endif %}	
+			{% endif %}
+		</div>
+		<div class="col-md-4 d-flex justify-content-center">
+			<form method="POST">
+				{% csrf_token %}
+				<fieldset class="form-group ">
+					<legend class="border-bottom mb-4 font-weight-bolder font-italic text-center">Add Reminder</legend>
+					<div class="shadow-lg rounded-lg p-5 bg-danger">
+						{{ form|crispy }}
+						<br>
+						<div class="form-group"> 
+							<button class="btn btn-info btn-outline-dark" type="submit">Submit</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>	
+	</div>
+</body>
+</html>

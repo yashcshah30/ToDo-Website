@@ -1,0 +1,48 @@
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% load crispy_forms_tags %}
+{{ u_form.media }}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>To-Do</title>
+  <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <style>
+      html, body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    </style>
+</head>
+<body class="bg-secondary">
+  <div>
+    <h4 class="text-light"><i><b><marquee>Welcome to To-Do</marquee></b></i></h4>
+  </div>
+  <nav class="navbar navbar-expand-md bg-danger navbar-danger justify-content-center sticky-top font-weight-bolder font-italic">
+    <h1>To-Do Web App</h1>
+  </nav>
+  <br>
+  <br>
+  <div class="d-flex justify-content-center">
+    <form method="POST">
+      {% csrf_token %}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4 text-center font-weight-bolder font-italic">Update Reminder</legend>
+        <div class="shadow-lg rounded-lg p-5 bg-danger">
+          {{ u_form|crispy }}
+          <br>  
+          <div class="form-group"> 
+            <button class="btn btn-info btn-outline-dark" type="submit">Update</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</body>
+</html>
